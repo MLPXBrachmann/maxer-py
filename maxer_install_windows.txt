@@ -1,0 +1,6 @@
+- Install Python 3: https://www.python.org/downloads/windows/
+- Download & unpack libvips: https://github.com/jcupitt/libvips/releases
+
+$ setx path "%path%;C:\pathToVips\bin"
+$ pip3 install -e .
+$ maxer --version

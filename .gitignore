@@ -1,0 +1,14 @@
+# Editor config
+.vscode
+
+# Coverage information
+.coverage
+
+# Python related files
+.cache
+*.egg-info
+**/__pycache__
+
+# Builds
+build
+dist
