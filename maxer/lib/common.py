@@ -37,7 +37,10 @@ def ensure_dir(path):
     :param path: The directory path
     """
     if not os.path.exists(path):
-        os.makedirs(path)
+        try:
+            os.makedirs(path)
+        except FileExistsError:
+            pass
 
 def parse_color(color_string):
     """
