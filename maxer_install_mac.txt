@@ -2,5 +2,5 @@
 - Install Homebrew: https://brew.sh/
 
 $ brew install vips
-$ pip3 install -e .
+$ sudo pip3 install .
 $ maxer --version

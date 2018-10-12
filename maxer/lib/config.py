@@ -169,12 +169,12 @@ def resolve_value(value, variable_set):
                 return not result if 'negate' in value and value['negate'] else result
             raise MaxerResolveError('Invalid configuration for operation \'{}\''.format(operation)) # TODO: Provide detailled error description
 
-        # TODO: Resolve key/value pairs
+        # TODO: Resolve keys
         elif operation == 'select':
             knownOperation = True
             if 'input' in value and 'values' in value and isinstance(value['values'], dict):
                 input_value = resolve_value(value['input'], variable_set)
-                return value['values'][input_value] if input_value in value['values'] else input_value
+                return resolve_value(value['values'][input_value], variable_set) if input_value in value['values'] else input_value
             raise MaxerResolveError('Invalid configuration for operation \'{}\''.format(operation)) # TODO: Provide detailled error description
 
         elif operation == 'fileExists':

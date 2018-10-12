@@ -133,6 +133,8 @@ def composite_image(config, base_dir, variable_set):
 
     # Set output options
     output_options = {}
+
+    # Set JPEG quality
     file_extension = os.path.splitext(output_file)[1]
     if 'quality' in output_config and file_extension == 'jpg' or file_extension == 'jpeg':
         quality = output_config['quality']
@@ -140,6 +142,16 @@ def composite_image(config, base_dir, variable_set):
             output_options['Q'] = quality
         else:
             print_warning('Invalid quality setting \'{}\''.format(str(quality)))
+
+    # Set size
+    if 'width' in output_config:
+        width = output_config['width']
+        if isinstance(width, int) and 0 < width:
+            image = image.resize(width / image.get('width'))
+        else:
+            print_warning('Invalid width setting \'{}\''.format(str(width)))
+    
+    # TODO: Scale by height
 
     # Write image
     try:

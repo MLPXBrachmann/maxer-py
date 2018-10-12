@@ -38,6 +38,8 @@ Notes
 -----
 
 - TODO: Check JSON before loading config
+- TODO: Feature: Set layer opacity
+- TODO: Feature: Resize based on height (+ non-uniform resize)
 - TODO: Feature: Exists boolean operation
 - TODO: If input string contains exactly one variable descriptor (and no additional characters): Resolve to variable value (do not stringify)
 - TODO: Feature: More sophisticated output options (e.g. size, colorspace, etc.)
