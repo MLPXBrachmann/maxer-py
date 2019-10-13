@@ -14,7 +14,9 @@ from .common import (
 )
 from .config import resolve_value
 
-BLEND_MODES = [pyvips.GValue.from_enum(pyvips.GValue.blend_mode_type, i) for i in range(0, 25)]
+BLEND_MODES = [pyvips.GValue.from_enum(
+    pyvips.GValue.blend_mode_type, i) for i in range(0, 25)]
+
 
 def is_layer_hidden(layer, variable_set):
     """
@@ -26,6 +28,7 @@ def is_layer_hidden(layer, variable_set):
     """
     return (isinstance(layer, dict)
             and 'hidden' in layer and resolve_value(layer['hidden'], variable_set))
+
 
 def create_layer(layer, base_dir, variable_set):
     """
@@ -39,7 +42,8 @@ def create_layer(layer, base_dir, variable_set):
     is_dict = isinstance(layer, dict)
 
     # Get file path
-    file = os.path.join(base_dir, resolve_value(layer['file'] if is_dict else layer, variable_set))
+    file = os.path.join(base_dir, resolve_value(
+        layer['file'] if is_dict else layer, variable_set))
 
     # Load image
     try:
@@ -68,6 +72,7 @@ def create_layer(layer, base_dir, variable_set):
 
     return image
 
+
 def get_blend_mode(layer, variable_set):
     """
     Get the blend mode of a given layer
@@ -80,8 +85,10 @@ def get_blend_mode(layer, variable_set):
         blend_mode = resolve_value(layer['blendMode'], variable_set)
         if blend_mode in BLEND_MODES:
             return blend_mode
-        print_warning('Unrecognized blend mode \'{}\', using \'over\' instead'.format(blend_mode))
+        print_warning(
+            'Unrecognized blend mode \'{}\', using \'over\' instead'.format(blend_mode))
     return 'over'
+
 
 def composite_image(config, base_dir, variable_set):
     """
@@ -94,12 +101,14 @@ def composite_image(config, base_dir, variable_set):
     input_config = config['input']
     input_base_dir = os.path.join(
         base_dir,
-        resolve_value(input_config['baseDir'], variable_set) if 'baseDir' in input_config else '',
+        resolve_value(
+            input_config['baseDir'], variable_set) if 'baseDir' in input_config else '',
     )
 
     output_config = config['output']
     output_file_identifier = os.path.join(
-        resolve_value(output_config['baseDir'], variable_set) if 'baseDir' in output_config else '',
+        resolve_value(
+            output_config['baseDir'], variable_set) if 'baseDir' in output_config else '',
         resolve_value(output_config['file'], variable_set),
     )
     output_file = os.path.join(
@@ -137,21 +146,20 @@ def composite_image(config, base_dir, variable_set):
     # Set JPEG quality
     file_extension = os.path.splitext(output_file)[1]
     if 'quality' in output_config and file_extension == 'jpg' or file_extension == 'jpeg':
-        quality = output_config['quality']
+        quality = resolve_value(output_config['quality'], variable_set)
         if isinstance(quality, int) and 0 <= quality <= 100:
             output_options['Q'] = quality
         else:
-            print_warning('Invalid quality setting \'{}\''.format(str(quality)))
+            print_warning(
+                'Invalid quality setting \'{}\''.format(str(quality)))
 
     # Set size
     if 'width' in output_config:
-        width = output_config['width']
+        width = resolve_value(output_config['width'], variable_set)
         if isinstance(width, int) and 0 < width:
             image = image.resize(width / image.get('width'))
         else:
             print_warning('Invalid width setting \'{}\''.format(str(width)))
-    
-    # TODO: Scale by height
 
     # Write image
     try:
